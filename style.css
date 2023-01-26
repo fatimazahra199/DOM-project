@@ -1,0 +1,38 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.table{
+    width: 80%;
+    margin: 60px;
+    border-collapse: collapse;
+    background-color: rgb(211, 198, 198);
+}
+.table td{
+    /* border: 2px solid rgb(9, 9, 10); */
+    border-bottom: 2px solid rgb(9, 9, 10);;
+    height: 8em; 
+    padding: 1em;
+    /* background-color: blue; */
+}
+.table tr {
+    border-bottom: 2px solid rgba(126, 126, 126, 0.404);
+    /* background-color: #dddddd; */
+}
+.TH th{
+   text-align: left;
+   padding: 1em;
+   /* background-color: red; */
+    height: 50px;
+}
+
+img{
+    width: 30rem;
+    height: 30rem;
+}
+
+.heart.red{
+    color: rgb(187, 45, 59);
+} 

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <title>My card</title>
+  </head>
+  <body>
+    <h1>Your Cart</h1>
+    <div id="main_content">
+      <table class="table">
+        <thead>
+          <tr class="TH">
+            <th>product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div
+        class="d-flex justify-content-between p-2 mb-2 table"
+        style="background-color: rgb(196, 188, 188)"
+      >
+        <h5 class="fw-bold mb-0">Total:</h5>
+        <h5 class="fw-bold mb-0 totals"></h5>
+      </div>
+    </div>
+    <script>
+      let data = [
+        {
+          id: 0,
+          name: "product1",
+          color: "red",
+          price: 500,
+          image:
+            "https://www.thebeautysalon.ie/wp-content/uploads/2021/05/imagemain.jpg",
+          qte: 1,
+          isShow: true,
+        },
+        {
+          id: 1,
+          name: "product2",
+          color: "black",
+          price: 132,
+          image:
+            "https://www.honestbrandreviews.com/wp-content/uploads/2021/06/Image-Skincare-Review-1.jpg",
+          qte: 1,
+          isShow: true,
+        },
+        {
+          id: 2,
+          name: "product3",
+          color: "gravel black",
+          price: 23,
+          image:
+            "http://cdn.shopify.com/s/files/1/0288/9859/0802/files/pf-8ef41e18-e685-40b7-8bdb-1bd151c2764d--imageskincare6733357623503794286227309010151941059626806n_grande.jpg?v=1614337787",
+          qte: 1,
+          isShow: true,
+        },
+      ];
+      var table = document.querySelector("tbody");
+
+      let innHTML = "";
+      data.forEach((product) => {
+        innHTML += `
+        <tr class='item'>
+          
+          <td>
+            <div class="row mb-4 d-flex justify-content-left align-items-center">
+              <div class="col-md-2 col-lg-2 col-xl-2 bg-image  rounded" data-mdb-ripple-color="light">
+                      <img
+                        src="${product.image}"
+                        class="img-fluid rounded-3 hover-overlay hover-zoom ripple" class="w-10" alt="image" >
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-xl-3">
+                      <h6 class="text-muted">${product.name}</h6>
+                      <h6 class="text-black mb-0">${product.color}</h6>
+                      <br>
+                      
+                      <button type="button" class="btn btn-primary btn-sm me-1 mb-2 fas fa-trash" data-mdb-toggle="tooltip" id="${product.id}"
+                  title="Remove item">
+           
+                </button>
+                <button type="button" class="btn btn-danger btn-sm mb-2" data-mdb-toggle="tooltip"
+                  title="Move to the wish list">
+                  <i class="fas fa-heart heart"></i>
+                </button> 
+                    </div>
+               </div>
+          </td>
+            <td>${product.price + "$"}</td>
+            <td><input min="1" class="kl" id ="${
+              product.id
+            }" type="number" value="${product.qte}"/></td>
+            <td id="totalQte-${product.id}" class="totales" > ${          parseInt(product.qte) * parseInt(product.price)        }</td>
+       </tr>`;
+      });
+      table.innerHTML += innHTML;
+
+    
+      let inputQTE = document.querySelectorAll(".kl");
+      
+      document.querySelector(".totals").innerHTML = getAmount();
+      inputQTE.forEach((item) => {
+        item.addEventListener("change", (e) => {
+          let id = e.currentTarget.id;
+          data[id].qte = parseInt(e.currentTarget.value);
+          console.log("#totalQte-" + id);
+          document.querySelector("#totalQte-" + id).innerHTML =
+            parseInt(data[id].qte) * parseInt(data[id].price);
+          document.querySelector(".totals").innerHTML = getAmount();
+        });
+      });
+
+      function getAmount() {
+        // return data.red
+        let sum = 0;
+        data
+          .filter((product) => product.isShow)
+          .forEach(
+            (product) =>
+              (sum += parseInt(product.qte) * parseInt(product.price))
+          );
+        return sum + "$";
+      }
+      let removeCart = document.getElementsByClassName("btn-primary");
+      console.log(removeCart);
+      for (var i = 0; i < removeCart.length; i++) {
+        var button = removeCart[i];
+        
+          button.addEventListener("click", function (e) {
+            var buttonClicked = e.target;
+            console.log(buttonClicked.id)
+
+            data.find((e)=>e.id==buttonClicked.id).isShow=false
+            buttonClicked.parentElement.parentElement.parentElement.parentElement.remove();
+            document.querySelector(".totals").innerHTML = getAmount();
+          });
+        
+      }
+
+      let hearts = document.getElementsByClassName("heart");
+      console.log(hearts);
+      for (var i = 0; i < hearts.length; i++) {
+        var but = hearts[i];
+        but.addEventListener("click", function (e) {
+          var heartClicked = e.target;
+          console.log(heartClicked);
+          heartClicked.classList.toggle("red");
+        });
+      }
+    </script>
+  </body>
+</html>
